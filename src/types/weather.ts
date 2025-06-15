@@ -15,6 +15,8 @@ export interface WeatherData {
     wind_speed_10m: number;
     wind_direction_10m: number;
     wind_gusts_10m: number;
+    uv_index: number;
+    visibility: number;
   };
   current_units: {
     time: string;
@@ -34,6 +36,8 @@ export interface WeatherData {
     wind_speed_10m: string;
     wind_direction_10m: string;
     wind_gusts_10m: string;
+    uv_index: string;
+    visibility: string;
   };
   hourly: {
     time: string[];
@@ -45,6 +49,9 @@ export interface WeatherData {
     surface_pressure: number[];
     cloud_cover: number[];
     wind_speed_10m: number[];
+    wind_direction_10m: number[];
+    uv_index: number[];
+    visibility: number[];
   };
   daily: {
     time: string[];
@@ -62,6 +69,9 @@ export interface WeatherData {
     wind_speed_10m_max: number[];
     wind_gusts_10m_max: number[];
     wind_direction_10m_dominant: number[];
+    sunrise: string[];
+    sunset: string[];
+    uv_index_max: number[];
   };
 }
 
@@ -76,4 +86,41 @@ export interface WeatherCode {
   code: number;
   description: string;
   icon: string;
+}
+
+export interface AirQuality {
+  aqi: number;
+  pm2_5: number;
+  pm10: number;
+  carbon_monoxide: number;
+  nitrogen_dioxide: number;
+  sulphur_dioxide: number;
+  ozone: number;
+  health_advisory: string;
+  trend: 'improving' | 'worsening' | 'stable';
+}
+
+export interface MoonPhase {
+  phase: number; // 0-1, where 0 = new moon, 0.5 = full moon
+  illumination: number; // percentage
+  phase_name: string;
+  moonrise: string;
+  moonset: string;
+}
+
+export interface ComfortIndex {
+  feels_like: number;
+  heat_index: number;
+  wind_chill: number;
+  comfort_level: 'comfortable' | 'humid' | 'muggy' | 'dry' | 'cold' | 'hot';
+  comfort_description: string;
+  activity_recommendations: string[];
+}
+
+export interface HealthAdvisory {
+  uv_advisory: string;
+  air_quality_advisory: string;
+  comfort_advisory: string;
+  outdoor_activity_rating: 'excellent' | 'good' | 'fair' | 'poor' | 'hazardous';
+  general_tips: string[];
 }

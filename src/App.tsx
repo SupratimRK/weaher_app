@@ -1,17 +1,23 @@
 import { useState, useEffect } from 'react';
 import { RefreshCw } from 'lucide-react';
-import type { WeatherData, Location } from './types/weather';
+import type { WeatherData, Location, AirQuality, MoonPhase } from './types/weather';
 import { WeatherService } from './services/weatherService';
 import { CurrentWeather } from './components/CurrentWeather';
 import { TemperatureChart } from './components/TemperatureChart';
 import { PrecipitationChart } from './components/PrecipitationChart';
 import { WeeklyForecast } from './components/WeeklyForecast';
+import { EnvironmentalData } from './components/EnvironmentalData';
+import { WindTracking } from './components/WindTracking';
+import { AstronomicalData } from './components/AstronomicalData';
+import { HealthComfort } from './components/HealthComfort';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
 
 function App() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [location, setLocation] = useState<Location | null>(null);
+  const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
+  const [moonPhase, setMoonPhase] = useState<MoonPhase | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -28,6 +34,15 @@ function App() {
       // Fetch weather data
       const weatherData = await WeatherService.getCurrentWeather(userLocation);
       setWeather(weatherData);
+
+      // Fetch air quality data
+      const airQualityData = await WeatherService.getAirQuality(userLocation);
+      setAirQuality(airQualityData);
+
+      // Get moon phase data
+      const moonPhaseData = WeatherService.getMoonPhase();
+      setMoonPhase(moonPhaseData);
+
       setLastUpdated(new Date());
     } catch (err) {
       console.error('Error fetching weather data:', err);
@@ -53,7 +68,7 @@ function App() {
     return <ErrorMessage message={error} onRetry={handleRefresh} />;
   }
 
-  if (!weather || !location) {
+  if (!weather || !location || !airQuality || !moonPhase) {
     return <ErrorMessage message="No weather data available" onRetry={handleRefresh} />;
   }
 
@@ -82,10 +97,10 @@ function App() {
           <button
             onClick={handleRefresh}
             disabled={loading}
-            className="btn-glass hover:pulse-glow group disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-glass group disabled:opacity-50 disabled:cursor-not-allowed"
             title="Refresh weather data"
           >
-            <RefreshCw className={`w-5 h-5 text-white group-hover:scale-110 transition-transform ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-5 h-5 text-white transition-transform ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
 
@@ -94,6 +109,16 @@ function App() {
           {/* Current Weather */}
           <div className="animate-fade-in-scale">
             <CurrentWeather weather={weather} location={location} />
+          </div>
+
+          {/* Environmental & Air Quality Data */}
+          <div className="animate-slide-in-up">
+            <EnvironmentalData weather={weather} airQuality={airQuality} />
+          </div>
+
+          {/* Health & Comfort Index */}
+          <div className="animate-slide-in-up">
+            <HealthComfort weather={weather} airQuality={airQuality} />
           </div>
 
           {/* Charts Section */}
@@ -106,14 +131,24 @@ function App() {
             </div>
           </div>
 
+          {/* Wind and Astronomical Data */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+            <div className="animate-slide-in-left">
+              <WindTracking weather={weather} />
+            </div>
+            <div className="animate-slide-in-right">
+              <AstronomicalData weather={weather} moonPhase={moonPhase} />
+            </div>
+          </div>
+
           {/* Weekly Forecast */}
-          <div className="animate-slide-in-up" style={{animationDelay: '0.4s'}}>
+          <div className="animate-slide-in-up">
             <WeeklyForecast weather={weather} />
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-8 sm:mt-12 text-center animate-fade-in-scale" style={{animationDelay: '0.6s'}}>
+        <div className="mt-8 sm:mt-12 text-center animate-fade-in-scale">
           <div className="glass-card inline-block px-6 py-3">
             <p className="text-white/70 text-xs sm:text-sm">
               Weather data provided by{' '}
@@ -121,9 +156,18 @@ function App() {
                 href="https://open-meteo.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white/90 hover:text-white transition-colors underline underline-offset-2 hover:underline-offset-4"
+                className="text-white/90 transition-colors underline underline-offset-2"
               >
                 Open-Meteo API
+              </a>
+              {' • '}
+              <a 
+                href="https://air-quality-api.open-meteo.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white/90 transition-colors underline underline-offset-2"
+              >
+                Air Quality API
               </a>
             </p>
           </div>

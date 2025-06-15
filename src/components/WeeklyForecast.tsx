@@ -21,10 +21,9 @@ export const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weather }) => {
           const isToday = index === 0;
           const dayLabel = isToday ? 'Today' : formatDate(date);
 
-          return (
-            <div 
+          return (            <div 
               key={date}
-              className="forecast-item animate-slide-in-up group"
+              className="forecast-item animate-slide-in-up"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               <div className="flex items-center justify-between">
@@ -40,7 +39,7 @@ export const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weather }) => {
 
                 {/* Weather Icon */}
                 <div className="flex-shrink-0 mx-3 sm:mx-4">
-                  <div className="p-2 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <div className="p-2 rounded-full bg-white/10 transition-colors">
                     <WeatherIcon 
                       code={dailyData.weather_code[index]}
                       size="small"
