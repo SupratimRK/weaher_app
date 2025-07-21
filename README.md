@@ -125,8 +125,8 @@ This project is open source and available under the [MIT License](LICENSE).
 - [Lucide](https://lucide.dev/) for beautiful icons
 - [Chart.js](https://www.chartjs.org/) for data visualization
 - [Tailwind CSS](https://tailwindcss.com/) for styling utilities
-})
-```
+
+## 🛠️ ESLint Configuration
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
