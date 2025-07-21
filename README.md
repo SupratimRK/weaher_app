@@ -2,7 +2,7 @@
 
 A modern, responsive weather web application built with React, TypeScript, and Tailwind CSS. Features beautiful glass morphism design, interactive charts, and comprehensive weather data from the Open-Meteo API.
 
-![Weather App Screenshot](https://via.placeholder.com/800x600/4F46E5/ffffff?text=Weather+App+Screenshot)
+![Weather App Screenshot](image.png)
 
 ## ✨ Features
 
